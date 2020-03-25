@@ -3,69 +3,134 @@ import Report from '../models/Report';
 import Inventory from '../models/Inventory';
 
 class ReportController {
+	public getReport(req: Request, res: Response) {
+		let id = req.params.id;
 
-    public getReport(req: Request, res: Response) {
-        Report.find({})
-              .populate('userId')
-              .populate('inventoryId')
-              .exec((err, reportDB) => {
-                if(err)
-                    return res.status(400).json({
-                        ok: false,
-                        reports: reportDB
-                    });
+		Inventory.findById(id, 'report createdAtReport', (err, reportDB) => {
+			if (err) {
+				return res.status(500).json({
+					ok: false,
+					err
+				});
+			}
 
-                res.json({
-                    ok: true,
-                    reports: reportDB
-                });
-              });
-    }
+			if (!reportDB) {
+				return res.status(400).json({
+					ok: false,
+					message: 'El id no existe',
+					err
+				});
+			}
 
-    public saveReport(req: Request, res: Response) {
-        let body = req.body;
+			res.json({
+				report: reportDB
+			});
+		});
+	}
 
-        const report = new Report({
-            inventoryId: body.inventoryId,
-            description: body.description 
-        });{
+	public updateReport(req: Request, res: Response) {
+		let body = req.body;
+		let id = req.body._id;
 
-        report.save((err, reportDB) => {
-            if(err)
-                return res.status(500).json({
-                    ok: false,
-                    err
-                });
+		Inventory.findByIdAndUpdate(
+			id,
+			{ report: body.report, createdAtReport: body.createdAtReport },
+			{ new: true },
+			(err, inventoryDB) => {
+				if (err) {
+					return res.status(500).json({
+						ok: false,
+						err
+					});
+				}
 
-            res.json({
-                ok : true,
-                report: reportDB
-            }); 
-            });
-        }
-    }
+				if (!inventoryDB) {
+					return res.status(400).json({
+						ok: false,
+						err,
+						mensaje: 'no existe el id'
+					});
+				}
 
-    public updateState(req: Request, res: Response) {
-        let id = req.body.inventoryId;
-        let state = req.body.state;
-      
-        Inventory.findByIdAndUpdate(id, {state}, {new: true}, (err, InventorySave) => {
-            if(err) {
-                return res.status(400).json({
-                    ok: false,
-                    err
-                });
-            }
+				res.json({
+					report: inventoryDB
+				});
+			}
+		);
+		// Report.findOne({inventoryId: id}, (err, reportDB) => {
 
-            res.json({
-                ok: true,
-                inventarios: InventorySave
-            });
-        });
+		//     if(err) {
+		//         return res.status(500).json({
+		//             ok: false,
+		//             err
+		//         });
+		//     }
 
-    }
+		//     reportDB.description = body.description;
+		//     reportDB.createdAt = body.createdAt;
 
+		//     reportDB.save((err, reportDB) => {
+		//         if(err) {
+		//             return res.status(500).json({
+		//                 ok: false,
+		//                 err
+		//             });
+		//         }
 
+		//         res.json({
+		//             report: reportDB
+		//         });
+		//     });
+
+		// });
+	}
+
+	public saveReport(req: Request, res: Response) {
+		let body = req.body;
+
+		const report = new Report({
+			inventoryId: body.inventoryId,
+			description: body.description
+		});
+		{
+			report.save((err, reportDB) => {
+				if (err)
+					return res.status(500).json({
+						ok: false,
+						err
+					});
+
+				res.json({
+					ok: true,
+					report: reportDB
+				});
+			});
+		}
+	}
+
+	public updateState(req: Request, res: Response) {
+		let id = req.body.inventoryId;
+		let state = req.body.state;
+
+		Inventory.findByIdAndUpdate(
+			id,
+			{ state },
+			{ new: true, runValidators: true },
+			(err, InventorySave) => {
+				if (err) {
+					return res.status(400).json({
+						ok: false,
+						err
+					});
+				}
+
+				res.json({
+					ok: true,
+					inventarios: InventorySave
+				});
+			}
+		);
+	}
 }
 
 export const reportController = new ReportController();

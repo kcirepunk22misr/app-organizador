@@ -1,18 +1,21 @@
 import { Schema, model, Document } from 'mongoose';
 
 const locationSchema = new Schema({
-    container: {
-        type: String,
-        required: [true, 'EL contenedor es necesario']
-    },
-    lote: {
-        type: String,
-        required: [true, 'Es necesario la ubicacion']
-    },
-    place: {
-        type: String,
-        required: [true, 'Es necesario la columna']
-    }
+	escaparate: {
+		type: String,
+		required: false,
+		unique: true
+	},
+	columna: {
+		type: String,
+		required: false,
+		unique: true
+	},
+	fila: {
+		type: String,
+		required: false,
+		unique: true
+	}
 });
 
 export default model('Location', locationSchema);

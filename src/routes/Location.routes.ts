@@ -5,5 +5,4 @@ const routes = Router();
 
 routes.get('/locacions', locationController.getLocations);
 routes.post('/add-location', locationController.saveLocation);
-
 export default routes;

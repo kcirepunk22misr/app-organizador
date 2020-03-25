@@ -4,7 +4,7 @@ import { format } from 'fecha';
 const inventorySchema = new Schema({
     name: {
         type: String,
-        required: [true, 'EL nombre es necesario'],
+        required: [true, 'El nombre es necesario'],
         lowercase: true
     },
     createdAt: {
@@ -15,46 +15,65 @@ const inventorySchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        default: '5e53d8777f40ae158784046f',
         required: [true, 'El id del usuario es necesario']
     },
     marca: {
         type: String,
-        required: [true, 'El ID de la marca es necesario']
+        required: [true, 'Campo marca es obligatorio']
     },
     type: {
         type: String,
-        required: [true, 'El ID del tipo es necesario']
+        required: [true, 'Campo tipo es obligatorio']
     },
     group: {
         type: String,
-        required: [true, 'EL ID del grupo es necesario']
+        required: [true, 'Campo grupo es obligatorio']
     },
     size: {
         type: String,
-        required: [true, 'El tamaño es necesario']
+        required: [true, 'Campo tamaño es obligatorio']
     },
     color: {
         type: String,
-        required: [true, 'El color es necesario']
+        required: [true, 'Campo color es obligatorio']
     },
     location: {
-        type: String,
-        required: [true, 'El ID de la ubicacion es necesario']
+        escaparate: {
+            type: String,
+            required: [true, 'EL escaparate es necesario']
+        },
+        columna: {
+            type: String,
+            required: [true, 'La columna es necesaria']
+        },
+        fila: {
+            type: String,
+            required: [true, 'La fila es necesaria']
+        }
     },
     state: {
         type: String,
-        required: [true, 'El estado de la herramienta es necesario']
+        required: [true, 'Campo estado es obligatorio']
     },
     quantify: {
         type: Number,
-        required: [true, 'La cantidad es requeridad']
+        required: [true, 'Campo cantidad es obligatorio']
     },
     img: {
         type: String,
         required: false
     },
-    active: {
+    report: {
+        type: String,
+        default: 'No tiene ninguna novedad hasta el momento...',
+        required: true
+    },
+    createdAtReport: {
+        type: String,
+        default: 'Ningun Registro',
+        required: true
+    },
+    available: {
         type: Boolean,
         required: true,
         default: true

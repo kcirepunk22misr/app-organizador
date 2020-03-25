@@ -15,6 +15,7 @@ const reportSchema = new Schema({
     },
     description: {
         type: String,
+        default: 'Ningun Registro aun',
         required: [true, 'La descripcion es necesario']
     },
     createdAt: {
