@@ -26,7 +26,6 @@ server.app.use((req: Request, res: Response, next: NextFunction) => {
 server.app.use(bodyParser.urlencoded({ extended: true }));
 server.app.use(bodyParser.json());
 server.app.use(morgan('dev'));
-
 // Routes
 import './routes/router';
 
