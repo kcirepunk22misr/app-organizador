@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const Inventory_controller_1 = require("../controllers/Inventory.controller");
+const multer_1 = __importDefault(require("../lib/multer"));
+const User_controller_1 = require("../controllers/User.controller");
+const router = express_1.Router();
+router.get('/inventory/:id', User_controller_1.userController.token, Inventory_controller_1.inventoryController.getInventoryById);
+router.get('/tools/:busqueda', User_controller_1.userController.token, Inventory_controller_1.inventoryController.search);
+router.get('/inventorys', Inventory_controller_1.inventoryController.getInventarios);
+router.get('/image/:img', Inventory_controller_1.inventoryController.getImage);
+router.post('/add-inventory', User_controller_1.userController.token, Inventory_controller_1.inventoryController.saveTool);
+router.put('/update-inventory', Inventory_controller_1.inventoryController.updateTool);
+router.put('/image-upload/:id', User_controller_1.userController.token, multer_1.default.single('image'), Inventory_controller_1.inventoryController.uploadImage);
+router.put('/delete-inventory', User_controller_1.userController.token, Inventory_controller_1.inventoryController.deleteTools);
+// router.post('/upload/:tipo/:id', inventoryController.uploadImage);
+exports.default = router;
